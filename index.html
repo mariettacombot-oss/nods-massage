@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NODS Massage · Deep Tissue · Marseille</title>
+
+  <!--
+    FONTS — Monument Extended & Akzidenz-Grotesk sont des polices sous licence.
+    Pour les activer, placez vos fichiers de polices à côté de index.html et
+    décommentez les blocs @font-face ci-dessous.
+
+    Noms de fichiers attendus :
+      MonumentExtended-Regular.woff2
+      MonumentExtended-Ultrabold.woff2
+      AkzidenzGrotesk-Regular.woff2
+      AkzidenzGrotesk-Medium.woff2
+  -->
+
+  <style>
+    /* ── @font-face (décommenter quand les fichiers sont présents) ──── */
+    /*
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('MonumentExtended-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('MonumentExtended-Ultrabold.woff2') format('woff2');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Akzidenz-Grotesk';
+      src: url('AkzidenzGrotesk-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Akzidenz-Grotesk';
+      src: url('AkzidenzGrotesk-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    */
+
+    /* ── Tokens ───────────────────────────────────────────────────── */
+    :root {
+      --ink:        #0C0C20;   /* deep navy-ink — replaces harsh #000080 */
+      --ink-dark:   #07071A;
+      --accent:     #9e2a3a;   /* single accent — burgundy deep */
+      --accent-dk:  #7a1e2d;
+      --bg:         #f5f2ee;   /* warm off-white */
+      --bg-warm:    #F0EDE8;
+      --text:       #1a1a1a;
+      --text-muted: #6B6070;
+      --white:      #ffffff;
+      --divider:    rgba(12,12,32,0.1);
+
+      --font-head:  'Monument Extended', 'Futura', 'Century Gothic', serif;
+      --font-body:  'Akzidenz-Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+      --nav-h: 70px;
+      --ease:  cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ── Reset ────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+    }
+    img { display: block; max-width: 100%; }
+    a   { text-decoration: none; color: inherit; }
+
+    /* ── Container ────────────────────────────────────────────────── */
+    .container {
+      width: min(1200px, 90%);
+      margin-inline: auto;
+    }
+
+    /* ── Button ───────────────────────────────────────────────────── */
+    .btn {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.25rem;
+      background: var(--ink);
+      color: var(--white);
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background 0.3s var(--ease), transform 0.2s var(--ease);
+    }
+    .btn:hover  { background: #0057ff; transform: translateY(-1px); }
+    .btn:active { transform: scale(0.98); background: #0046cc; }
+
+    .btn--outline {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.6);
+      color: var(--white);
+    }
+    .btn--outline:hover {
+      background: var(--white);
+      border-color: var(--white);
+      color: var(--ink);
+      transform: translateY(-1px);
+    }
+    .btn--outline:active { transform: scale(0.98); }
+
+    /* ── Eyebrow ──────────────────────────────────────────────────── */
+    .eyebrow {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.9rem;
+    }
+
+    /* ── Fade-in ──────────────────────────────────────────────────── */
+    .fade {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+    .fade.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      inset: 0 0 auto;
+      height: var(--nav-h);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease);
+    }
+    #nav.scrolled {
+      background: rgba(245,242,238,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--divider);
+    }
+    #nav .container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #nav .nav-logo img {
+      height: 120px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+    #nav .nav-btn {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.5rem;
+      background: var(--ink);
+      color: var(--white);
+      transition: background 0.25s var(--ease), transform 0.2s var(--ease);
+    }
+    #nav .nav-btn:hover  { background: #0057ff; transform: translateY(-1px); }
+    #nav .nav-btn:active { transform: scale(0.98); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       HERO — left-aligned editorial layout
+    ═══════════════════════════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    #hero .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('background.jpg') center / cover no-repeat;
+      background-color: var(--ink-dark);
+      transform-origin: center;
+    }
+    #hero .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(7, 7, 26, 0.82) 0%,
+        rgba(7, 7, 26, 0.45) 60%,
+        rgba(7, 7, 26, 0.2) 100%
+      );
+    }
+    #hero .hero-inner {
+      position: relative;
+      z-index: 2;
+      color: var(--white);
+      padding: calc(var(--nav-h) + 6rem) 0 8rem;
+      width: 100%;
+    }
+    #hero .hero-content {
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+    #hero .hero-logo-main {
+      height: 320px;
+      width: auto;
+      max-width: 72vw;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+      filter: brightness(0) invert(1);
+    }
+    #hero .hero-tagline {
+      font-family: var(--font-head);
+      font-size: clamp(0.72rem, 1.4vw, 0.9rem);
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    #hero .hero-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--accent);
+    }
+    #hero .hero-sub {
+      font-family: var(--font-body);
+      font-size: clamp(0.78rem, 1.5vw, 0.95rem);
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.72);
+      max-width: 44ch;
+      line-height: 1.75;
+    }
+    #hero .hero-cta { margin-top: 0.75rem; }
+
+    /* scroll indicator */
+    #hero .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    #hero .scroll-hint::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════════════════════════════ */
+    #about {
+      background: var(--bg);
+      padding: clamp(6rem, 12vw, 10rem) 0;
+    }
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: clamp(3.5rem, 8vw, 7rem);
+      align-items: start;
+    }
+    #about .portrait {
+      position: sticky;
+      top: calc(var(--nav-h) + 2rem);
+      aspect-ratio: 3/4;
+      background: var(--ink);
+      overflow: hidden;
+    }
+    #about .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 55%;
+      transition: transform 0.8s var(--ease);
+    }
+    #about .portrait:hover img { transform: scale(1.03); }
+    #about .portrait-ph {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      color: rgba(245,242,238,0.3);
+    }
+    #about .portrait-ph span {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    #about .about-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    #about .about-blocks > .eyebrow { margin-bottom: 1.5rem; }
+    .about-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--divider);
+    }
+    .about-block:last-child { border-bottom: 1px solid var(--divider); }
+    .about-block h3 {
+      font-family: var(--font-head);
+      font-size: clamp(0.88rem, 1.6vw, 1.1rem);
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      color: var(--ink);
+    }
+    .about-block p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 54ch;
+      line-height: 1.82;
+    }
+    .about-block p + p { margin-top: 0.75rem; }
+    .about-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-top: 0.5rem;
+    }
+    .about-list li {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+    .about-list li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.75rem;
+      top: 0.1em;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SERVICES — premium list layout
+    ═══════════════════════════════════════════════════════════════ */
+    #services {
+      background: var(--white);
+      padding: clamp(6rem, 12vw, 10rem) 0;
+    }
+    #services .services-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--divider);
+    }
+    #services .services-header h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      color: var(--ink);
+      line-height: 1;
+    }
+    #services .services-header .header-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      max-width: 28ch;
+      line-height: 1.6;
+      text-align: right;
+    }
+    .services-list { display: flex; flex-direction: column; }
+    .service-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 2.25rem 0;
+      border-bottom: 1px solid var(--divider);
+      transition: background 0.3s var(--ease);
+    }
+    .service-row:hover { background: var(--bg); }
+    .service-row:hover { padding-left: 1.5rem; padding-right: 1.5rem; margin: 0 -1.5rem; }
+    .service-row .service-info { display: flex; flex-direction: column; gap: 0.5rem; }
+    .service-row h3 {
+      font-family: var(--font-head);
+      font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .service-row .service-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      max-width: 50ch;
+      line-height: 1.65;
+    }
+    .service-row .price {
+      font-family: var(--font-head);
+      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      text-align: right;
+      overflow: visible;
+      min-width: max-content;
+    }
+    .service-row .price small {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+    .service-row .btn { white-space: nowrap; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BOOKING
+    ═══════════════════════════════════════════════════════════════ */
+    #booking {
+      background: var(--ink);
+      padding: clamp(6rem, 12vw, 10rem) 0;
+    }
+    #booking .booking-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 7vw, 6rem);
+      align-items: start;
+    }
+    #booking .booking-left { color: var(--white); }
+    #booking .booking-left .eyebrow { color: var(--accent); }
+    #booking .booking-left h2 {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+    }
+    #booking .booking-left p {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.8;
+      max-width: 38ch;
+      letter-spacing: 0.02em;
+    }
+    #booking .booking-left .booking-details {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    #booking .booking-detail-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    #booking .booking-detail-row .detail-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      min-width: 80px;
+    }
+    #booking .booking-detail-row .detail-val {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.04em;
+    }
+    #booking .booking-widget { display: flex; align-items: flex-start; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BLOG — editorial asymmetric layout
+    ═══════════════════════════════════════════════════════════════ */
+    #blog {
+      background: var(--bg);
+      padding: clamp(6rem, 12vw, 10rem) 0;
+    }
+    #blog .blog-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+    }
+    #blog .blog-header h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      color: var(--ink);
+      line-height: 1;
+    }
+    #blog .blog-header .header-link {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+      white-space: nowrap;
+      transition: opacity 0.25s var(--ease);
+    }
+    #blog .blog-header .header-link:hover { opacity: 0.65; }
+
+    /* Asymmetric grid: featured large + two stacked */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      grid-template-rows: auto auto;
+      gap: 1.5rem;
+    }
+    .blog-card--featured {
+      grid-row: 1 / 3;
+      display: flex;
+      flex-direction: column;
+    }
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      overflow: hidden;
+      transition: transform 0.4s var(--ease);
+    }
+    .blog-card:hover { transform: translateY(-3px); }
+    .blog-card .card-img {
+      overflow: hidden;
+    }
+    .blog-card--featured .card-img { aspect-ratio: 4/3; }
+    .blog-card:not(.blog-card--featured) .card-img { aspect-ratio: 16/9; }
+    .blog-card .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .blog-card:hover .card-img img { transform: scale(1.05); }
+    .blog-card .card-body {
+      padding: 1.75rem 1.75rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      flex: 1;
+    }
+    .blog-card--featured .card-body { padding: 2rem 2rem 2.25rem; }
+    .blog-card .card-date {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .blog-card h3 {
+      font-family: var(--font-head);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .blog-card--featured h3 { font-size: clamp(1.1rem, 2.2vw, 1.5rem); }
+    .blog-card:not(.blog-card--featured) h3 { font-size: clamp(0.88rem, 1.4vw, 1.05rem); }
+    .blog-card .card-excerpt {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+    .blog-card:not(.blog-card--featured) .card-excerpt { display: none; }
+    .blog-card .read-more {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink);
+      border-bottom: 1px solid var(--divider);
+      padding-bottom: 2px;
+      margin-top: 0.75rem;
+      align-self: flex-start;
+      transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+    }
+    .blog-card .read-more:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       GALLERY
+    ═══════════════════════════════════════════════════════════════ */
+    #gallery {
+      padding: 6rem 0;
+      background: var(--bg-light);
+    }
+    #gallery .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .gallery-item {
+      overflow: hidden;
+      border-radius: 4px;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      color: #fff;
+      font-size: 2.5rem;
+      cursor: pointer;
+      line-height: 1;
+      background: none;
+      border: none;
+    }
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════════ */
+    #footer {
+      background: var(--ink);
+      padding: 4rem 0;
+    }
+    #footer .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      text-align: center;
+    }
+    #footer .footer-logo img {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.75;
+    }
+    #footer .footer-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255,255,255,0.12);
+    }
+    #footer .footer-icons {
+      display: flex;
+      gap: 0.75rem;
+    }
+    #footer .footer-icons a {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.4);
+      transition: border-color 0.25s var(--ease), color 0.25s var(--ease), transform 0.2s var(--ease);
+    }
+    #footer .footer-icons a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+    #footer .footer-copy {
+      font-size: 0.66rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.25);
+      line-height: 2;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════════ */
+    @media (max-width: 1000px) {
+      .blog-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+      }
+      .blog-card--featured { grid-row: auto; }
+      .blog-card:not(.blog-card--featured) .card-excerpt { display: block; }
+    }
+
+    @media (max-width: 780px) {
+      #about .about-grid { grid-template-columns: 1fr; }
+      #about .portrait {
+        position: static;
+        aspect-ratio: 4/3;
+        max-height: 360px;
+      }
+      .about-block p { max-width: none; }
+
+      #services .services-header { flex-direction: column; align-items: flex-start; }
+      #services .services-header .header-note { text-align: left; }
+      .service-row {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+      .service-row .price { text-align: left; }
+      .service-row:hover { padding-left: 0; padding-right: 0; margin: 0; }
+
+      #booking .booking-layout { grid-template-columns: 1fr; }
+
+      .blog-grid { grid-template-columns: 1fr; }
+      .blog-card--featured { grid-row: auto; }
+    }
+
+    @media (max-width: 480px) {
+      #hero .hero-logo-main { height: 220px; }
+      #hero .scroll-hint { display: none; }
+      #services .services-header h2 { letter-spacing: 0.04em; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       NAV
+  ═══════════════════════════════════════════════════════════════ -->
+  <nav id="nav" role="navigation" aria-label="Navigation principale">
+    <div class="container">
+      <a href="#hero" class="nav-logo" aria-label="NODS Massage – accueil">
+        <img src="Nods massage nouveau.svg" alt="NODS Massage" />
+      </a>
+      <a href="#booking" class="nav-btn">Réserver</a>
+    </div>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="hero" aria-label="NODS Massage">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-inner fade">
+      <div class="container">
+        <div class="hero-content">
+          <img class="hero-logo-main" src="Nods massage nouveau.svg" alt="NODS Massage" />
+          <div class="hero-divider"></div>
+          <p class="hero-tagline">Massage Deep Tissue · Marseille</p>
+          <p class="hero-sub">Un travail en profondeur sur les tissus musculaires. Pour les corps en mouvement et ceux qui ont besoin de l'être.</p>
+          <a href="#booking" class="btn btn--outline hero-cta">Prendre rendez-vous</a>
+        </div>
+      </div>
+    </div>
+    <span class="scroll-hint">Défiler</span>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ABOUT
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="about" aria-label="À propos">
+    <div class="container">
+      <div class="about-grid">
+
+        <!-- Portrait -->
+        <div class="portrait fade">
+          <img src="portrait.jpg" alt="Marietta – masseuse NODS à Marseille" />
+        </div>
+
+        <!-- Text blocks -->
+        <div class="about-blocks">
+          <span class="eyebrow fade">À propos</span>
+
+          <div class="about-block fade">
+            <h3>Mon approche</h3>
+            <p>Chaque massage est différent parce que chaque corps est différent. Je travaille en profondeur sur les tissus musculaires, je cible les zones de tension, je dénoue ce qui bloque. L'objectif&nbsp;: retrouver de la mobilité, accélérer la récupération, et tout simplement se sentir mieux en sortant.</p>
+            <p>Je crée un espace où on se parle. Tes ressentis guident mon geste. Si c'est trop fort, on ajuste. Si c'est pas assez, on va chercher plus loin. Chaque pression doit être juste.</p>
+          </div>
+
+          <div class="about-block fade">
+            <h3>Ma formation</h3>
+            <p>Diplômée en massage Deep Tissue &amp; Sportif chez WellB Formation. Je me suis formée en avril 2025, puis j'ai passé des mois à m'entraîner, lire, tester, recommencer. NODS a officiellement vu le jour en septembre 2025.</p>
+          </div>
+
+          <div class="about-block fade">
+            <h3>Pour qui&nbsp;?</h3>
+            <p>NODS, c'est pour les corps en mouvement. Sportives, sportifs qui veulent intégrer le massage dans leur routine de récupération. Mais aussi pour celles et ceux qui ont juste envie de se détendre et de se faire du bien.</p>
+            <p>En fonction de ton activité, on adapte. Tu fais du kitesurf ou de la natation&nbsp;? On travaille le haut du corps. Tu cours ou tu fais du vélo&nbsp;? On passe du temps sur les cuisses, les mollets, les pieds.</p>
+            <p>Le deep tissue, c'est un massage qui mêle travail des points de tension, mobilité, étirements. Le but, c'est toujours de faire du bien et de dénouer ce qui coince. Pas question que ce soit dans la douleur ou dans la crispation.</p>
+            <p>Sportifs engagés, actifs qui traînent des tensions chroniques, ou toute personne qui veut prendre soin de son corps avec exigence&nbsp;: NODS s'adapte à chaque profil, chaque objectif.</p>
+          </div>
+
+          <div class="about-block fade">
+            <h3>Qui suis-je&nbsp;?</h3>
+            <p>Moi, c'est Marietta. 10 ans que j'évolue derrière un écran. En 2018, je suis diagnostiquée d'une spondylarthrite ankylosante qui me ruine la vie pendant 4 ans. Plus possible de sortir, de danser, de faire du sport. Je ne suis plus maîtresse de mon corps. Les massages me soulagent.</p>
+            <p>Depuis 2024, j'ai trouvé ce qui fonctionne pour moi. Je ne souffre plus. Mais cette période a eu un impact évident sur mon rapport au corps, au mouvement.</p>
+            <p>Les douleurs ne sont pas normales. Le stress et le mode de vie peuvent en causer. Et les massages, dans le cadre d'une hygiène de vie saine, peuvent considérablement améliorer les douleurs musculaires, agir sur le stress, le système nerveux, et tout ce qu'on a tendance à ignorer.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SERVICES
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="services" aria-label="Prestations et tarifs">
+    <div class="container">
+      <div class="services-header fade">
+        <div>
+          <span class="eyebrow">Prestations</span>
+          <h2>Soins &amp; Tarifs</h2>
+        </div>
+        <p class="header-note">Séances à domicile ou en studio à Marseille. Paiement via Square.</p>
+      </div>
+
+      <div class="services-list">
+
+        <div class="service-row fade">
+          <div class="service-info">
+            <h3>Massage Deep Tissue</h3>
+            <p class="service-desc">1h de soin ciblé en profondeur. Travail sur les couches musculaires profondes pour dissoudre les tensions et libérer les adhérences myofasciales.</p>
+          </div>
+          <div class="price">70 &euro;<small>par séance</small></div>
+          <a href="#booking" class="btn">Réserver</a>
+        </div>
+
+        <div class="service-row fade">
+          <div class="service-info">
+            <h3>Massage Deep Tissue 1h30</h3>
+            <p class="service-desc">1h30 de travail approfondi pour les corps qui ont besoin de plus de temps. Idéal pour les zones multiples ou les tensions persistantes.</p>
+          </div>
+          <div class="price">90 &euro;<small>par séance</small></div>
+          <a href="#booking" class="btn">Réserver</a>
+        </div>
+
+        <div class="service-row fade">
+          <div class="service-info">
+            <h3>Package 5 séances</h3>
+            <p class="service-desc">Idéal pour un suivi régulier sur plusieurs semaines et une récupération progressive et durable.</p>
+          </div>
+          <div class="price">320 &euro;<small>64 &euro; / séance</small></div>
+          <a href="#booking" class="btn">Réserver</a>
+        </div>
+
+        <div class="service-row fade">
+          <div class="service-info">
+            <h3>Package 12 séances</h3>
+            <p class="service-desc">Un engagement annuel pour transformer votre récupération et intégrer le soin corporel dans votre routine.</p>
+          </div>
+          <div class="price">600 &euro;<small>50 &euro; / séance · 12 mois</small></div>
+          <a href="#booking" class="btn">Réserver</a>
+        </div>
+
+        <div class="service-row fade">
+          <div class="service-info">
+            <h3>Carte Cadeau</h3>
+            <p class="service-desc">Offrez un moment de récupération. Carte personnalisée disponible sur demande, pour toutes les occasions.</p>
+          </div>
+          <div class="price">Libre<small>sur demande</small></div>
+          <a href="#booking" class="btn">Réserver</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       BOOKING
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="booking" aria-label="Réservation en ligne">
+    <div class="container">
+      <div class="booking-layout">
+        <div class="booking-left fade">
+          <span class="eyebrow">Réservation</span>
+          <h2>Réserver<br>votre séance</h2>
+          <p>Choisissez votre créneau directement en ligne. Le règlement s'effectue via Square au moment de la réservation.</p>
+          <div class="booking-details">
+            <div class="booking-detail-row">
+              <span class="detail-label">Lieu</span>
+              <span class="detail-val">Marseille, 148 rue Sainte, 13007</span>
+            </div>
+            <div class="booking-detail-row">
+              <span class="detail-label">Durée</span>
+              <span class="detail-val">1 heure par séance</span>
+            </div>
+            <div class="booking-detail-row">
+              <span class="detail-label">Contact</span>
+              <span class="detail-val">marietta.combot@gmail.com</span>
+            </div>
+          </div>
+        </div>
+        <div class="booking-widget fade">
+          <!-- Start Square Appointments Embed Code -->
+          <script src='https://square.site/appointments/buyer/widget/a7axacnb6u5pt5/LX2XMFD3KGCYN.js'></script>
+          <!-- End Square Appointments Embed Code -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       BLOG
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="blog" aria-label="Blog – conseils et récupération">
+    <div class="container">
+      <div class="blog-header fade">
+        <div>
+          <span class="eyebrow">Lecture</span>
+          <h2>Conseils &amp; récupération</h2>
+        </div>
+        <a href="#" class="header-link">Tous les articles</a>
+      </div>
+
+      <div class="blog-grid">
+
+        <article class="blog-card blog-card--featured fade">
+          <div class="card-img">
+            <img src="blog/massage-portrait.jpg" alt="Massage deep tissue à Marseille" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <span class="card-date">15 mars 2025</span>
+            <h3>Pourquoi le deep tissue change vraiment les choses</h3>
+            <p class="card-excerpt">Le massage deep tissue n'est pas un massage de confort : c'est un outil thérapeutique. Découvrez comment il agit sur les couches profondes du tissu musculaire et pourquoi ses effets perdurent bien au-delà de la séance.</p>
+            <a href="#" class="read-more">Lire l'article</a>
+          </div>
+        </article>
+
+        <article class="blog-card fade">
+          <div class="card-img">
+            <img src="blog/massage-mains.jpg" alt="Technique de massage thérapeutique" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <span class="card-date">28 février 2025</span>
+            <h3>Récupération active vs passive&nbsp;: ce que dit la science</h3>
+            <p class="card-excerpt">Faut-il se reposer complètement ou continuer à bouger après l'effort&nbsp;?</p>
+            <a href="#" class="read-more">Lire l'article</a>
+          </div>
+        </article>
+
+        <article class="blog-card fade">
+          <div class="card-img">
+            <img src="blog/table-mer.jpg" alt="Table de massage au bord de la mer" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <span class="card-date">10 janvier 2025</span>
+            <h3>5 étirements matinaux pour protéger votre dos</h3>
+            <p class="card-excerpt">Une routine de 10 minutes pour réveiller les chaînes musculaires.</p>
+            <a href="#" class="read-more">Lire l'article</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════════════ -->
+  <footer id="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+
+        <div class="footer-logo">
+          <img src="Nods massage nouveau.svg" alt="NODS Massage" />
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-icons">
+          <a href="https://www.instagram.com/nods_massage/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="5"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a href="mailto:marietta.combot@gmail.com" aria-label="Email">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <polyline points="2,4 12,13 22,4"/>
+            </svg>
+          </a>
+        </div>
+
+        <p class="footer-copy">
+          © 2025 NODS Massage · Marseille<br>
+          Réservation &amp; paiement via Square
+        </p>
+
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JS
+  ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 56);
+    }, { passive: true });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const siblings = [...entry.target.parentElement.querySelectorAll('.fade')];
+        const idx = siblings.indexOf(entry.target);
+        const delay = Math.min(idx * 80, 320);
+        setTimeout(() => entry.target.classList.add('in'), delay);
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+    document.querySelector('#hero .fade')?.classList.add('in');
+
+    // Lightbox
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+
+</body>
+</html>
